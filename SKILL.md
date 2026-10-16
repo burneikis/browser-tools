@@ -12,7 +12,7 @@ Chrome DevTools Protocol tools for agent-assisted web automation. These tools co
 Run once before first use:
 
 ```bash
-cd {baseDir}/browser-tools
+cd {baseDir}
 npm install
 ```
 
@@ -23,16 +23,19 @@ npm install
 {baseDir}/browser-start.js --profile    # Copy user's profile (cookies, logins)
 ```
 
-Launch Chrome with remote debugging on `:9222`. Use `--profile` to preserve user's authentication state.
+Launch Chrome with remote debugging on `:9222`. Use `--profile` to preserve user's authentication state. Note: `--profile` copies the user's real Chrome profile (cookies, logins) into `~/.cache/browser-tools`; only use it when the user asks for it.
+
+Override the Chrome binary or source profile with `CHROME_PATH` and `CHROME_PROFILE` env vars if needed.
 
 ## Navigate
 
 ```bash
 {baseDir}/browser-nav.js https://example.com
 {baseDir}/browser-nav.js https://example.com --new
+{baseDir}/browser-nav.js https://example.com --reload
 ```
 
-Navigate to URLs. Use `--new` flag to open in a new tab instead of reusing current tab.
+Navigate to URLs. Use `--new` flag to open in a new tab instead of reusing current tab. Use `--reload` to force a reload after navigating (bypasses stale state).
 
 ## Evaluate JavaScript
 
@@ -57,11 +60,11 @@ Capture current viewport and return temporary file path. Use this to visually in
 {baseDir}/browser-pick.js "Click the submit button"
 ```
 
-**IMPORTANT**: Use this tool when the user wants to select specific DOM elements on the page. This launches an interactive picker that lets the user click elements to select them. The user can select multiple elements (Cmd/Ctrl+Click) and press Enter when done. The tool returns CSS selectors for the selected elements.
+**IMPORTANT**: Use this tool when the user wants to select specific DOM elements on the page. This launches an interactive picker that lets the user click elements to select them. The user can select multiple elements (Cmd/Ctrl+Click) and press Enter when done. The tool returns tag, id, class, text, HTML snippet, and parent chain for each selected element.
 
 Common use cases:
-- User says "I want to click that button" → Use this tool to let them select it
-- User says "extract data from these items" → Use this tool to let them select the elements
+- User says "I want to click that button" -> Use this tool to let them select it
+- User says "extract data from these items" -> Use this tool to let them select the elements
 - When you need specific selectors but the page structure is complex or ambiguous
 
 ## Cookies
@@ -70,7 +73,7 @@ Common use cases:
 {baseDir}/browser-cookies.js
 ```
 
-Display all cookies for the current tab including domain, path, httpOnly, and secure flags. Use this to debug authentication issues or inspect session state.
+Display all cookies for the current tab including values, domain, path, httpOnly, and secure flags. Values are printed in plain text, so avoid sharing the output. Use this to debug authentication issues or inspect session state.
 
 ## Extract Page Content
 

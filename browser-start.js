@@ -13,6 +13,8 @@ if (process.argv[2] && process.argv[2] !== "--profile") {
 }
 
 const SCRAPING_DIR = `${process.env.HOME}/.cache/browser-tools`;
+const CHROME_PATH = process.env.CHROME_PATH || "/usr/bin/google-chrome-stable";
+const CHROME_PROFILE = process.env.CHROME_PROFILE || `${process.env.HOME}/.config/google-chrome`;
 
 // Check if already running on :9222
 try {
@@ -45,14 +47,14 @@ if (useProfile) {
 			--exclude='*/Current Tabs' \
 			--exclude='*/Last Session' \
 			--exclude='*/Last Tabs' \
-			"${process.env.HOME}/.config/google-chrome/" "${SCRAPING_DIR}/"`,
+			"${CHROME_PROFILE}/" "${SCRAPING_DIR}/"`,
 		{ stdio: "pipe" },
 	);
 }
 
 // Start Chrome with flags to force new instance
 spawn(
-	"/usr/bin/google-chrome-stable",
+	CHROME_PATH,
 	[
 		"--remote-debugging-port=9222",
 		`--user-data-dir=${SCRAPING_DIR}`,

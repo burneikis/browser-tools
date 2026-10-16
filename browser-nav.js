@@ -34,6 +34,10 @@ if (newTab) {
 	console.log("✓ Opened:", url);
 } else {
 	const p = (await b.pages()).at(-1);
+	if (!p) {
+		console.error("✗ No active tab found");
+		process.exit(1);
+	}
 	await p.goto(url, { waitUntil: "domcontentloaded" });
 	if (reload) {
 		await p.reload({ waitUntil: "domcontentloaded" });
